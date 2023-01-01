@@ -3,7 +3,7 @@ import org.junit.Test;
 
 public class MainClassTest extends MainClass{
     @Test
-    public void test(){
+    public void testGetLocalNumber(){
 
         Assert.assertTrue("getLocalNumber not equal 14 ",14 == this.getLocalNumber());
         //В классе MainClassTest написать тест, проверяющий,
