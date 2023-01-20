@@ -1,10 +1,12 @@
 import io.appium.java_client.AppiumDriver;
+import io.appium.java_client.TouchAction;
 import io.appium.java_client.android.AndroidDriver;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.openqa.selenium.By;
+import org.openqa.selenium.Dimension;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.support.ui.ExpectedConditions;
@@ -201,7 +203,83 @@ public class FirstTest {
         );
     }
 
+    //Ex4*: Тест: проверка слов в поиске
+    //Написать тест, который делает поиск по какому-то слову.
+    // Например, JAVA. Затем убеждается, что в каждом результате поиска есть это слово.
+    //Внимание, прокручивать результаты выдачи поиска не надо.
+    // Это мы научимся делать на следующих занятиях.
+    // Пока надо работать только с теми результатами поиска, который видны сразу, без прокрутки.
+    @Test
+    public void testCheckWordsInSearch() {
+        waitForElementAndClick(
+                By.xpath("//*[contains(@text,'Search Wikipedia')]"),
+                "Cannot find search wikipedia input",
+                5
+        );
 
+        waitForElementAndSendKeys(
+                By.xpath("//*[contains(@text,'Search…')]"),
+                "bmw",
+                "Cannot find search input",
+                5
+        );
+
+        List <WebElement> test = waitForElementsPresent(
+                By.id("org.wikipedia:id/page_list_item_title"),
+                "Cannot find search elements",
+                5
+        );
+
+        for(int i = 0; i<test.size(); i++){
+            String yyy = test.get(i).getAttribute("text");
+            //System.out.println(yyy);
+            Assert.assertTrue("no bmw", yyy.contains("BMW"));
+
+        }
+    }
+
+
+    //lesson 01. Swipe: start_x, Touch action, dimensions
+    @Test
+    public void testSwipeArticle() {
+        waitForElementAndClick(
+                By.xpath("//*[contains(@text,'Search Wikipedia')]"),
+                "Cannot find search wikipedia input",
+                5
+        );
+
+        waitForElementAndSendKeys(
+                By.xpath("//*[contains(@text,'Search…')]"),
+                "java",
+                "Cannot find search input",
+                5
+        );
+
+        waitForElementAndClick(
+                By.xpath("//*[@resource-id='org.wikipedia:id/page_list_item_container']//*[@text='Object-oriented programming language']"),
+                "Cannot find search wikipedia input",
+                5
+        );
+
+        waitForElementPresent(
+                By.id("org.wikipedia:id/view_page_title_text"),
+                "Cannot find article title",
+                5
+
+        );
+
+        swipeUP(2000);
+        swipeUP(2000);
+        swipeUP(2000);
+        swipeUP(2000);
+        swipeUP(2000);
+
+
+
+    }
+
+
+    //
     private WebElement waitForElementPresent(By by, String error_message, long timeoutInSecond) {
         WebDriverWait wait = new WebDriverWait(driver, timeoutInSecond);
         wait.withMessage(error_message+"\n");
@@ -266,6 +344,31 @@ public class FirstTest {
         return wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(by));
 
     }
+
+    protected void swipeUP(int timeOfSwipe) {
+
+        TouchAction action = new TouchAction(driver);
+
+        Dimension size = driver.manage().window().getSize();//передаем параметры экрана девайса
+
+        int x = size.width / 2;
+        int start_y = (int) (size.height * 0.8);
+        int end_y = (int) (size.height * 0.2);
+
+        action.press(x, start_y).waitAction(timeOfSwipe).moveTo(x, end_y).release().perform();
+    }
+
+    //Ex4*: Тест: проверка слов в поиске
+    //Метод для поиска слова в каждом результате поиска.
+    /*private List <WebElement> waitForWordInEveryElementsPresent(By by, String error_message, long timeoutInSecond) {
+        WebDriverWait wait = new WebDriverWait(driver, timeoutInSecond);
+        wait.withMessage(error_message+"\n");
+        //List<WebElement> elementName = driver.findElements(by);
+        //return wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(by));
+        return wait.until(ExpectedConditions.);
+
+    }*/
+
 
 
 
