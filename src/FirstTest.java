@@ -653,6 +653,39 @@ public class FirstTest {
     //Написать тест, который открывает статью и убеждается, что у нее есть элемент title.
     //Важно: тест не должен дожидаться появления title, проверка должна производиться сразу.
     // Если title не найден - тест падает с ошибкой. Метод можно назвать assertElementPresent.
+    @Test
+    public void testTitlePresent() {
+
+        waitForElementAndClick(
+                By.xpath("//*[contains(@text,'Search Wikipedia')]"),
+                "Cannot find search wikipedia input",
+                5
+        );
+
+        waitForElementAndSendKeys(
+                By.xpath("//*[@resource-id = 'org.wikipedia:id/search_src_text'][contains(@text, 'Search…')]"),
+                "java",
+                "Cannot find search input",
+                5
+        );
+
+        waitForElementAndClick(
+                By.xpath("//*[@text='Java (programming language)']"),
+                "Cannot find created article",
+                5
+        );
+
+        waitForElementPresent(
+                By.xpath("//*[@resource-id='org.wikipedia:id/view_page_title_text'][@text='Java (programming language)']"),
+                "Cannot found title of article",
+                0
+        );
+
+    }
+
+
+
+
 
     //Ex7*: Поворот экрана
     //Appium устроен так, что может сохранить у себя в памяти поворот экрана,
@@ -662,6 +695,13 @@ public class FirstTest {
     // неправильном положении экрана, что может привести к незапланированным проблемам.
     //Как нам сделать так, чтобы после теста на поворот экрана сам экран всегда оказывался в правильном положении,
     // даже если тест упал в тот момент, когда экран был наклонен?
+    @Test
+    public void testRotateDisplay() {
+
+
+    }
+
+
 
     //Методы
     private WebElement waitForElementPresent(By by, String error_message, long timeoutInSecond) {
