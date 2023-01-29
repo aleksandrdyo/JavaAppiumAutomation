@@ -613,7 +613,37 @@ public class FirstTest {
 
         assertElementsPresent(
                 By.xpath(search_result_locator),
-                "is not equal 2"
+                "is not equal 2",
+                2
+        );
+
+        swipeElementToLeft(
+                By.xpath("//*[@text='Java (programming language)']"),
+                "Cannot find created article"
+        );
+
+        waitForElementPresent(
+                By.xpath("//*[@text='JavaScript']"),
+                "Cannot found last article",
+                10
+        );
+
+        assertElementsPresent(
+                By.xpath(search_result_locator),
+                "is not equal 1",
+                1
+        );
+
+        waitForElementAndClick(
+                By.xpath("//*[@text='JavaScript']"),
+                "Cannot found last article",
+                10
+        );
+
+        waitForElementPresent(
+                By.xpath("//*[@resource-id = 'org.wikipedia:id/view_page_title_text'][@text='JavaScript']"),
+                "Cannot found JavaScript title",
+                10
         );
 
 
@@ -776,9 +806,9 @@ public class FirstTest {
         }
     }
 
-    private void assertElementsPresent(By by, String error_message) {
+    private void assertElementsPresent(By by, String error_message, int count_element) {
         int amount_of_elements = getAmountOfElements(by);
-        if (amount_of_elements != 2) {
+        if (amount_of_elements != count_element) {
             //System.out.println(error_message);
             String default_message = "Count of found elements by " + by.toString() + " ";
             throw new AssertionError(default_message + " " + error_message);
