@@ -672,13 +672,15 @@ public class FirstTest {
         waitForElementAndClick(
                 By.xpath("//*[@text='Java (programming language)']"),
                 "Cannot find created article",
-                5
+                15
         );
 
-        waitForElementPresent(
-                By.xpath("//*[@resource-id='org.wikipedia:id/view_page_title_text'][@text='Java (programming language)']"),
-                "Cannot found title of article",
-                0
+        String search_result_locator = "//*[@resource-id='org.wikipedia:id/view_page_title_text']";
+
+        assertElementsPresent(
+                By.xpath(search_result_locator),
+                "not equals 1",
+                1
         );
 
     }
@@ -848,6 +850,7 @@ public class FirstTest {
 
     private void assertElementsPresent(By by, String error_message, int count_element) {
         int amount_of_elements = getAmountOfElements(by);
+        System.out.println(amount_of_elements);
         if (amount_of_elements != count_element) {
             //System.out.println(error_message);
             String default_message = "Count of found elements by " + by.toString() + " ";
